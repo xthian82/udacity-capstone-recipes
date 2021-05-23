@@ -1,0 +1,8 @@
+{
+  "domain": "dev-n52gwsqz.us.auth0.com",
+  "clientId": "MhR8xlCh1t5S0wwo9rkp3XFkjV58MMYN",
+  "audience": "YOUR_API_IDENTIFIER",
+  "apiUri": "http://localhost:3001",
+  "appUri": "http://localhost:4200",
+  "errorPath": "/error"
+}
