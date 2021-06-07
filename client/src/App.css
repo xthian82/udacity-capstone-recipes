@@ -1,0 +1,66 @@
+.next-steps .fa-link {
+    margin-right: 5px;
+}
+
+/* Fix for use only flexbox in content area */
+.next-steps .row {
+    margin-bottom: 0;
+}
+
+.next-steps .col-md-5 {
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .next-steps .col-md-5 {
+        margin-bottom: 0;
+    }
+}
+
+.spinner {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.result-block-container .result-block {
+    opacity: 1;
+}
+
+body {
+    font-family: 'Merriweather Sans', sans-serif;
+}
+
+.text-slanted {
+    font-family: 'Croissant One', cursive;
+    font-size: xxx-large;
+}
+
+.text-publisher {
+    font-family: 'Croissant One', cursive;
+    font-size: small;
+}
+
+.text-body-img {
+   font-family: 'Merriweather Sans', sans-serif; /*'Oswald', sans-serif, cursive; */
+   font-size: xx-large !important;
+}
+
+/*
+.text-search {
+    font-family: 'Oswald', sans-serif;
+    font-size: xxx-large;
+}*/
+
+/*
+font-family: 'Croissant One', cursive;
+font-family: 'Merriweather Sans', sans-serif;
+font-family: 'Oswald', sans-serif;
+*/
