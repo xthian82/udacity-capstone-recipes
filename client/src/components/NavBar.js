@@ -19,6 +19,7 @@ import {
 } from "reactstrap";
 
 import {useAuth0} from "@auth0/auth0-react";
+import {faSignInAlt} from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +75,7 @@ const NavBar = () => {
                                      color="primary"
                                      className="btn btn-margin"
                                      onClick={() => loginWithRedirect()}
-                                  > <FontAwesomeIcon icon="sign-in" /> Log in
+                                  > <FontAwesomeIcon icon={faSignInAlt} className="mr-1" /> Log in
                                   </Button>
                               </NavItem>
                            )}
@@ -118,7 +119,7 @@ const NavBar = () => {
                                      block
                                      onClick={() => loginWithRedirect({})}
                                   >
-                                       <span className="text-slanted">Log in vwevwevewvwe</span>
+                                       <span className="text-slanted">Log in</span>
                                   </Button>
                               </NavItem>
                           </Nav>

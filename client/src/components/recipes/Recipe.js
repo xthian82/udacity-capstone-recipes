@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-import {faHeart, faFileSignature, faFileImport, faFileArchive, faFileAlt} from "@fortawesome/free-solid-svg-icons";
+import {faFileSignature, faHeart} from "@fortawesome/free-solid-svg-icons";
 
-import {useAuth0} from "@auth0/auth0-react";
-import {faSearchengin} from "@fortawesome/free-brands-svg-icons";
+import LinesEllipsis from "react-lines-ellipsis";
 
 
 class Recipe extends Component {
-   // const {isAuthenticated} = useAuth0();
 
-   clicked() {
-      console.log('clicked!!!!');
+   handleReflow = (rleState) => {
+      const { clamped, text } = rleState
    }
 
     render() {
-
 
        const {
           image_url,
@@ -24,41 +21,43 @@ class Recipe extends Component {
           social_rank,
           title} = this.props.recipe;
 
-       const {isAuthenticated} = this.props;
+       const {handleDetails} = this.props;
 
         return (
            <React.Fragment>
-               <div className="col-10 mx-auto col-md-6 col-lg-4 my-3">
-                  <div className="card">
+               <div className="col-10 mx-auto col-md-5 col-lg-4 my-2">
+                  <div className="card top-round-20 bottom-round-20">
                      <img
                         src={image_url}
-                        className="img-card-top"
-                        style={{height: "15rem"}}
+                        className="img-card-top top-round-20"
+                        style={{height: "18rem"}}
                         alt="recipe"/>
                      <div className="card-body text-body-img text-capitalize">
-                        <h6>{title}</h6>
+                        <h6>
+                           <LinesEllipsis
+                              text={title}
+                              onReflow={this.handleReflow}
+                              maxLine={1}
+                           />
+                        </h6>
                         <h6 className="text-warning text-publisher">
                            provided by {publisher}
                         </h6>
                      </div>
-                     <div className="card-footer">
+                     <div className="card-footer bottom-round-20">
 
                         <button
                            type="button"
-                           className="btn btn-success text-capitalize">
+                           className="btn btn-success text-capitalize rounded-pill"
+                           onClick={() => handleDetails(0, recipe_id)} >
                            <FontAwesomeIcon icon={faFileSignature} className="mr-1" />
-                           Info
+                           Details
                         </button>
-                        <button
-                           type="button"
-                           onClick={() => this.clicked()}
-                           disabled={isAuthenticated === false}
+                        <span
                            className="btn">
                            <FontAwesomeIcon color="red" icon={faHeart} className="mr-1" />
                            <span>{social_rank}</span>
-                        </button>
-
-
+                        </span>
                      </div>
                   </div>
                </div>

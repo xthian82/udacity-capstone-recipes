@@ -1,7 +1,6 @@
 export const recipe = {
-    f2f_url: "http://food2fork.com/view/35382",
     image_url:
-       "http://static.food2fork.com/Jalapeno2BPopper2BGrilled2BCheese2BSandwich2B12B500fd186186.jpg",
+       "https://www.smalltownwoman.com/wp-content/uploads/2015/04/Jalapeno-Popper-Grilled-Cheese-2-II.jpg",
     ingredients: [
         "2 jalapeno peppers, cut in half lengthwise and seeded",
         "2 slices sour dough bread",
@@ -11,5 +10,6 @@ export const recipe = {
         "1 tablespoon tortilla chips, crumbled"
     ],
     publisher: "Closet Cooking",
-    title: "Jalapeno Popper Grilled Cheese Sandwich"
+    title: "Jalapeno Popper Grilled Cheese Sandwich",
+    social_rank: 30
 }

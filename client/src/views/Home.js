@@ -8,11 +8,13 @@ class Home extends Component {
 
    state = {
       recipesData: [],
-      url: 'http://localhost:4200/api/search'
+      url: 'http://localhost:4200/api/search',
+      details_id: 35382,
+      pageIndex: 1,
+      search:''
    };
 
-   // async
-   getRecipes() {
+   async getRecipes() {
       try {
          //const data = await fetch(url);
          //const jsonData = await data.json();
@@ -29,14 +31,53 @@ class Home extends Component {
       this.getRecipes();
    }
 
+
+   handleIndex = (index) => {
+      this.setState({
+         pageIndex: index
+      })
+   }
+
+   handleDetails = (index, id) => {
+      this.setState({
+         pageIndex: index,
+         details_id: id
+      })
+   }
+
+   displayPage = (index) => {
+      switch (index) {
+         default:
+         case 1:
+            return (
+               <RecipeList recipes={this.state.recipesData}
+                  handleDetails={this.handleDetails}
+                  value={this.state.search}
+                  handleChange={this.handleChange}
+                  handleSubmit={this.handleSubmit}
+               />
+            )
+         case 0:
+            return (
+               <RecipeDetails id={this.state.details_id} handleIndex={this.handleIndex}/>
+            )
+      }
+   }
+
+   handleChange = (e) => {
+      console.log('hello from handle change');
+   }
+
+   handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('hello from handle submit');
+   }
+
    render()
    {
-
-      const {isAuthenticated} = this.props;
       return (
          <Fragment>
-            <RecipeList recipes={this.state.recipesData} isAuthenticated={isAuthenticated} />
-            <RecipeDetails />
+            { this.displayPage(this.state.pageIndex) }
          </Fragment>
       );
    }
