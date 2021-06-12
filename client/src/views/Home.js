@@ -7,19 +7,33 @@ import {recipes} from "../utils/tempList";
 class Home extends Component {
 
    state = {
-      recipesData: [],
-      url: 'http://localhost:4200/api/search',
+      recipes: [],
+      url: 'http://localhost:4200/api/recipes',
+      base_url: 'http://localhost:4200/api/recipes/search',
       details_id: 35382,
       pageIndex: 1,
-      search:''
+      search:'',
+      query:'?q=',
+      currentPage: 1,
+      postsPerPage: 10
    };
 
-   async getRecipes() {
+
+   getRecipes() {
       try {
-         //const data = await fetch(url);
-         //const jsonData = await data.json();
+        /* const data = await fetch(url);
+         const jsonData = await data.json();
+         if (jsonData.recipes.length === 0) {
+            this.setState(() => {
+               return {error: "search didn't result any match"}
+            })
+         } else {
+            this.setState(() => {
+               return {recipes: jsonData.recipes}
+            })
+         }*/
          this.setState({
-            recipesData: recipes
+            recipes: recipes
          });
       } catch (e) {
          console.log(e);
@@ -50,12 +64,13 @@ class Home extends Component {
          default:
          case 1:
             return (
-               <RecipeList recipes={this.state.recipesData}
+               <RecipeList recipes={this.state.recipes}
                   handleDetails={this.handleDetails}
                   value={this.state.search}
                   handleChange={this.handleChange}
                   handleSubmit={this.handleSubmit}
-               />
+                           error={this.state.error} />
+
             )
          case 0:
             return (
@@ -65,12 +80,24 @@ class Home extends Component {
    }
 
    handleChange = (e) => {
+      this.setState({
+         search: e.target.value
+      });
       console.log('hello from handle change');
    }
 
    handleSubmit = (e) => {
       e.preventDefault();
-      console.log('hello from handle submit');
+
+      const {base_url, query, search} = this.state;
+      console.log(`hello from handle submit base=${base_url}, q=${query}, s=${search}`);
+      this.setState(() => {
+         return {
+            url: `${base_url}${query}${search}`,
+            search: ""
+         }}, () => {
+         this.getRecipes()
+      });
    }
 
    render()
