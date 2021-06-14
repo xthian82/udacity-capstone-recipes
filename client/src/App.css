@@ -81,14 +81,10 @@ body {
     border-radius: 2em;
 }
 
-/*
-.text-search {
-    font-family: 'Oswald', sans-serif;
-    font-size: xxx-large;
-}*/
-
-/*
-font-family: 'Croissant One', cursive;
-font-family: 'Merriweather Sans', sans-serif;
-font-family: 'Oswald', sans-serif;
-*/
+.nav-logo {
+    background-image: url("assets/hood.png");
+    width: 7rem;
+    height: 5rem;
+    background-repeat: space;
+    background-size: contain;
+}

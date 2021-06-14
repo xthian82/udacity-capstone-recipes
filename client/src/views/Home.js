@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from "react";
+import ReactPaginate from 'react-paginate';
 
 import RecipeList from "../components/recipes/RecipeList";
 import RecipeDetails from "../components/recipes/RecipeDetails";
@@ -14,8 +15,9 @@ class Home extends Component {
       pageIndex: 1,
       search:'',
       query:'?q=',
-      currentPage: 1,
-      postsPerPage: 10
+      currentPage: 0,
+      offset:0,
+      recipesPerPage: 9
    };
 
 
@@ -32,8 +34,11 @@ class Home extends Component {
                return {recipes: jsonData.recipes}
             })
          }*/
+         const data = recipes.slice(this.state.offset, this.state.offset + this.state.recipesPerPage);
+
          this.setState({
-            recipes: recipes
+            recipes: data,
+            pageCount: Math.ceil(recipes.length / this.state.recipesPerPage)
          });
       } catch (e) {
          console.log(e);
@@ -59,11 +64,25 @@ class Home extends Component {
       })
    }
 
+   handlePageClick = (e) => {
+      const selectedPage = e.selected;
+      const offset = selectedPage * this.state.recipesPerPage;
+
+      this.setState({
+         currentPage: selectedPage,
+         offset: offset
+      }, () => {
+         this.getRecipes()
+      });
+
+   };
+
    displayPage = (index) => {
       switch (index) {
          default:
          case 1:
             return (
+               <div>
                <RecipeList recipes={this.state.recipes}
                   handleDetails={this.handleDetails}
                   value={this.state.search}
@@ -71,6 +90,33 @@ class Home extends Component {
                   handleSubmit={this.handleSubmit}
                            error={this.state.error} />
 
+                  <div className="container">
+                     <div className="row">
+                     <div className="col-10 mx-auto col-md-1 text-center p-1">
+
+                  <ReactPaginate
+                     previousLabel={"<"}
+                     nextLabel={">"}
+                     breakLabel={"..."}
+                     breakClassName={"page-item"}
+                     breakLinkClassName={"page-link"}
+                     containerClassName={"pagination"}
+                     pageClassName={"page-item"}
+                     pageLinkClassName={"page-link"}
+                     previousClassName={"page-item"}
+                     previousLinkClassName={"page-link"}
+                     nextClassName={"page-item"}
+                     nextLinkClassName={"page-link"}
+                     subContainerClassName={"pages pagination"}
+                     pageCount={this.state.pageCount}
+                     marginPagesDisplayed={3}
+                     pageRangeDisplayed={6}
+                     onPageChange={this.handlePageClick}
+                     activeClassName={"active"}/>
+                  </div>
+                  </div>
+                  </div>
+               </div>
             )
          case 0:
             return (

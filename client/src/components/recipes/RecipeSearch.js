@@ -12,9 +12,9 @@ class RecipeSearch extends Component {
          <React.Fragment>
             <div className="container">
                <div className="row">
-                  <div className="col-10 mx-auto col-md-8 mt-5 text-center">
+                  <div className="col-10 mx-auto col-md-7 text-center">
                      <h1 className="text-slanted">
-                        Search for recipes
+                        Search
                      </h1>
                      <form className="mt-4" onSubmit={handleSubmit}>
                         <div className="input-group">

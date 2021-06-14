@@ -1,10 +1,9 @@
 import React from "react";
 
 const Footer = () => (
-   <footer className="bg-light p-1 text-center">
-
+   <footer className="bg-light p-1 text-right">
        <p>
-           Powered by <a href="https://auth0.com">Auth0</a>
+          &copy; 2021
        </p>
    </footer>
 );
