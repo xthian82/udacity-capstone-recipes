@@ -96,5 +96,10 @@ export const recipes = [
         title: "Original Lasagna from Italy",
         publisher: "Vale Cooking",
         social_rank: 90
+    },
+    {
+        recipe_id: 35394,
+        title: "Tortillas With Mandiocas",
+        publisher: "Vale Cooking"
     }
 ];

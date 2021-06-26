@@ -63,6 +63,11 @@ body {
    font-size: x-large;
 }
 
+.text-ingredient-detail {
+    font-family: 'Cookie', cursive;
+    font-size: medium;
+}
+
 .top-round-20 {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;

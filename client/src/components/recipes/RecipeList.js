@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Recipe from "./Recipe";
+import RecipeItem from "./RecipeItem";
 import RecipeSearch from "./RecipeSearch";
 
 class RecipeList extends Component {
@@ -34,9 +34,9 @@ class RecipeList extends Component {
                      ? <h1 className="text-danger text-center">{error}</h1>
                      : recipes.map(recipe => {
                            return (
-                              <Recipe key={recipe.recipe_id}
-                                      recipe={recipe}
-                                      handleDetails={handleDetails} />
+                              <RecipeItem key={recipe.recipe_id}
+                                          recipe={recipe}
+                                          handleDetails={handleDetails} />
                            );
                         })
                   }

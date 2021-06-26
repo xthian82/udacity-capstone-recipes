@@ -11,16 +11,23 @@ import ExternalApi from "./views/ExternalApi";
 import {useAuth0} from "@auth0/auth0-react";
 import history from "./utils/history";
 
+import MyRecipes from "./views/MyRecipes";
+import AddRecipe from "./components/recipes/view-edit/AddRecipe";
+
 // styles
 import "./App.css";
 
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
+import useLocalStorage from "./utils/useLocalStorage";
+import EditRecipe from "./components/recipes/view-edit/EditRecipe";
 
 initFontAwesome();
 
 const App = () => {
    const {isLoading, error} = useAuth0();
+
+   const [recipes, setRecipes] = useLocalStorage('recipes', []);
 
    if (error) {
       return <div>Oops... {error.message}</div>;
@@ -39,6 +46,21 @@ const App = () => {
                   <Route path="/" exact component={Home}/>
                   <Route path="/profile" component={Profile}/>
                   <Route path="/external-api" component={ExternalApi}/>
+
+                  <Route path="/recipes"
+                     render={(props) =>
+                        <MyRecipes {...props} recipes={recipes} setRecipes={setRecipes} /> } />
+
+                  <Route path="/add-recipe"
+                         render={(props) => (
+                            <AddRecipe {...props} recipes={recipes} setRecipes={setRecipes} />
+                         )}/>
+
+                  <Route path="/edit-recipe/:id"
+                         render={(props) => (
+                            <EditRecipe {...props} recipes={recipes} setRecipes={setRecipes} />
+                         )}/>
+
                </Switch>
             </Container>
             <Footer/>

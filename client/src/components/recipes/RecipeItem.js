@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
 import {faFileSignature, faHeart} from "@fortawesome/free-solid-svg-icons";
-
 import LinesEllipsis from "react-lines-ellipsis";
 
+import noimage from '../../assets/no-image.png'
 
-class Recipe extends Component {
+class RecipeItem extends Component {
 
    handleReflow = (rleState) => {
       const { clamped, text } = rleState
@@ -15,13 +14,14 @@ class Recipe extends Component {
     render() {
 
        const {
-          image_url,
           publisher,
           recipe_id,
-          social_rank,
           title} = this.props.recipe;
 
        const {handleDetails} = this.props;
+
+       const image_url = this.props.recipe.image_url || noimage;
+       const social_rank = this.props.recipe.social_rank || 0;
 
         return (
            <React.Fragment>
@@ -66,4 +66,4 @@ class Recipe extends Component {
     }
 }
 
-export default Recipe;
+export default RecipeItem;

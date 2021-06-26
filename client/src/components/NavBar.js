@@ -54,6 +54,19 @@ const NavBar = () => {
                                    Home
                                </NavLink>
                            </NavItem>
+
+                            {/* TODO: implement authenticated*/}
+                           <NavItem>
+                               <NavLink
+                                  tag={RouterNavLink}
+                                  to="/recipes"
+                                  exact
+                                  activeClassName="router-link-exact-active"
+                               >
+                                   Recipes
+                               </NavLink>
+                           </NavItem>
+
                            {isAuthenticated && (
                               <NavItem>
                                   <NavLink
