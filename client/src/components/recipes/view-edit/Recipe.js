@@ -2,7 +2,6 @@ import React from 'react';
 import { Button} from 'react-bootstrap'; //, Card
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-// import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import { Card } from 'semantic-ui-react'
 import noimage from '../../../assets/no-image.png'
@@ -10,12 +9,11 @@ import noimage from '../../../assets/no-image.png'
 const Recipe = ({
                  id,
                  title,
+                 userId,
                  ingredients,
                  date,
                  handleRemoveRecipe
               }) => {
-
-   // const history = useHistory();
 
    return (
 

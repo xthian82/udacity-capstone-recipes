@@ -24,7 +24,7 @@ class RecipeList extends Component {
                <div className="row">
                   <div className="col-10 mx-auto col-md-6 text-center mb-3">
                      <h1 className="text-slanted">
-                        Foodies' List
+                        Popular Foodies
                      </h1>
                   </div>
                </div>

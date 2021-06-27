@@ -55,7 +55,7 @@ const NavBar = () => {
                                </NavLink>
                            </NavItem>
 
-                            {/* TODO: implement authenticated*/}
+                            {isAuthenticated && (
                            <NavItem>
                                <NavLink
                                   tag={RouterNavLink}
@@ -66,8 +66,9 @@ const NavBar = () => {
                                    Recipes
                                </NavLink>
                            </NavItem>
+                            )}
 
-                           {isAuthenticated && (
+                           {/*{isAuthenticated && (
                               <NavItem>
                                   <NavLink
                                      tag={RouterNavLink}
@@ -78,7 +79,7 @@ const NavBar = () => {
                                       External API
                                   </NavLink>
                               </NavItem>
-                           )}
+                           )}*/}
                        </Nav>
                        <Nav className="d-none d-md-block" navbar>
                            {!isAuthenticated && (
