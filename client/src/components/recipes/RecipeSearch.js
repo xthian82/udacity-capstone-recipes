@@ -14,7 +14,7 @@ class RecipeSearch extends Component {
                <div className="row">
                   <div className="col-10 mx-auto col-md-7 text-center">
                      <h1 className="text-slanted">
-                        Search
+                        Look for others
                      </h1>
                      <form className="mt-4" onSubmit={handleSubmit}>
                         <div className="input-group">

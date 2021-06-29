@@ -53,6 +53,11 @@ body {
     font-size: small;
 }
 
+.text-footer {
+    /* font-family: 'Cookie', cursive; */
+    font-size: small;
+}
+
 .text-body-img {
    font-family: 'Merriweather Sans', sans-serif; /*'Oswald', sans-serif, cursive; */
    font-size: xx-large !important;

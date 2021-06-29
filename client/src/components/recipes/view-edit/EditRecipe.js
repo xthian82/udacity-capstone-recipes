@@ -1,6 +1,8 @@
 import React from 'react';
 import RecipeForm from "./RecipeForm";
 import { useParams } from 'react-router-dom';
+import {withAuthenticationRequired} from "@auth0/auth0-react";
+import Loading from "../../Loading";
 
 const EditRecipe = ({ history, recipes, setRecipes }) => {
    const { id } = useParams();
@@ -19,4 +21,6 @@ const EditRecipe = ({ history, recipes, setRecipes }) => {
    );
 };
 
-export default EditRecipe;
+export default withAuthenticationRequired(EditRecipe, {
+   onRedirecting: () => <Loading/>,
+});
