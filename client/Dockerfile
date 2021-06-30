@@ -1,44 +1,30 @@
-FROM node:10-alpine as build
+# pull official base image
+FROM node:12-alpine
 
-RUN apk update && apk upgrade && \
-  apk add --no-cache bash git openssh yarn
-
-RUN mkdir /app
-
+# set working directory
 WORKDIR /app
 
-COPY package.json .
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN yarn install
+# install app dependencies
+COPY package.json ./
 
-COPY . .
+COPY package-lock.json ./
 
-RUN yarn build
+RUN npm install
 
-# ---------------
+#RUN npm install react-scripts@3.4.1 -g
+RUN npm install react-scripts -g
 
-FROM node:10-alpine
+#RUN npm audit fix
 
-RUN mkdir -p /app/build
-
-RUN apk update && apk upgrade && apk add yarn git
-
-WORKDIR /app
-
-COPY --from=build /app/package.json .
-
-RUN yarn install --production
-
-COPY --from=build /app/build ./build
-COPY --from=build /app/src/auth_config.json ./src/auth_config.json
-COPY --from=build /app/server.js .
-COPY --from=build /app/api-server.js .
+# add app
+COPY . ./
 
 EXPOSE 3000
-EXPOSE 3001
 
 ENV SERVER_PORT=3000
-ENV API_PORT=3001
-ENV NODE_ENV production
 
-CMD ["yarn", "prod"]
+# start app
+CMD ["npm", "start"]
