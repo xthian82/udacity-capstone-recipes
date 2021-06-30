@@ -29,10 +29,6 @@
       "type": "integer"
     }
   },
-  "required": [
-    "recipeId",
-    "title"
-  ],
   "additionalProperties": false
 }
 

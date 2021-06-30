@@ -86,7 +86,7 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/search-recipe?q=onion",
+							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/search-recipe?q=vinegar",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -102,7 +102,7 @@
 							"query": [
 								{
 									"key": "q",
-									"value": "onion"
+									"value": "vinegar"
 								}
 							]
 						}
@@ -110,7 +110,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all recipe by Id",
+					"name": "Get recipe by Id",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -121,7 +121,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes/1",
+							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipe/35382",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -132,8 +132,8 @@
 							],
 							"path": [
 								"dev",
-								"recipes",
-								"1"
+								"recipe",
+								"35382"
 							]
 						}
 					},
@@ -158,7 +158,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Water flowers\",\n\t\"dueDate\": \"2019-06-11\"\n}"
+							"raw": "{\n  \"recipeId\": \"35382\",\n  \"attachmentUrl\": \"https://www.smalltownwoman.com/wp-content/uploads/2015/04/Jalapeno-Popper-Grilled-Cheese-2-II.jpg\",\n   \"title\": \"Jalapeno Popper Grilled Cheese Sandwich\",\n   \"category\": \"spicy food, keto\",\n   \"ingredients\": [\"oil\", \"thee crops\", \"2 mass\", \"1 vinegar\"]     \n    }"
 						},
 						"url": {
 							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes",
@@ -181,7 +181,7 @@
 				{
 					"name": "Update recipe",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -197,10 +197,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Change the world\",\n\t\"dueDate\": \"2019-12-11\",\n\t\"done\": true\n}"
+							"raw": "{ \n    \"recipeId\": 35382,\n   \"title\": \"Jalapenos Popper Grilled Cheese Sandwich\",\n   \"category\": \"spicy food\"   \n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes/35dd600f-43c2-4649-903c-615e1586a26f",
+							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes/35382",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -212,7 +217,7 @@
 							"path": [
 								"dev",
 								"recipes",
-								"35dd600f-43c2-4649-903c-615e1586a26f"
+								"35382"
 							]
 						}
 					},
@@ -240,7 +245,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes/fe671583-4512-45f6-9475-4265c04362fb",
+							"raw": "https://{{apiId}}.execute-api.us-east-1.amazonaws.com/dev/recipes/35382",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -252,7 +257,7 @@
 							"path": [
 								"dev",
 								"recipes",
-								"fe671583-4512-45f6-9475-4265c04362fb"
+								"35382"
 							]
 						}
 					},
@@ -343,7 +348,7 @@
 		},
 		{
 			"key": "authToken",
-			"value": ""
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjBPQ1ZVc0RmUTZLdk5SZ05qWEVmMCJ9.eyJnaXZlbl9uYW1lIjoiY3Jpc3RoaWFuIiwiZmFtaWx5X25hbWUiOiJyZWNhbGRlIiwibmlja25hbWUiOiJjcmVjYWxkZSIsIm5hbWUiOiJjcmlzdGhpYW4gcmVjYWxkZSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQU9oMTRHZ0Y5UWN5ZmloUzJQanJra1pfUERMT0dEZ2VwN09kUjlRUXlqMzAzZz1zOTYtYyIsImxvY2FsZSI6ImVzIiwidXBkYXRlZF9hdCI6IjIwMjEtMDYtMzBUMDI6MjU6MTUuMzM3WiIsImVtYWlsIjoiY3JlY2FsZGVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vZGV2LW41Mmd3c3F6LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExMTQ5MjAzNTA4NTg1MzAyNzE5OSIsImF1ZCI6Ik1oUjh4bENoMXQ1UzB3d285cmtwM1hGa2pWNThNTVlOIiwiaWF0IjoxNjI1MDE5OTE3LCJleHAiOjE2MjUwNTU5MTcsIm5vbmNlIjoiYUdkVE1GbHNjWFJQZW1scVJYNDVaa1ZuU2w5MFIyVnVkRWxUUmtkMWJITlNSMUpWV1VSbVVtOUdNdz09In0.qLZW5q1XR5o0LsAtvpUKGLBWdLpj7buHmiolzZhd9OIUQ-JVNa3tumU7TgiahMq0NywU9BkXrXQETTHt27y2Kc04P1MYpjpspyHZKUlK4kXp8npNRhDHV9F6dbJKrDrBoe6NoJ65nZXCJuNGbOTGewoDpznzKm-0Vzozh2k41Lazw4vYjUMksSImSaiigtTV9Lts6lbFb4Umhq5kDLBWhlhrfdE3N6CCJAk4FHAymPb_wwxUeCOBH3EBhXP37qy2JnpNulAXPNdVcAak4nhK5TK82RfCzSVEnCiIrZrUwXa1lUepBBiXr7RvJLd-l73ERgCTGKDCRoTw0z-iWPscFw"
 		}
 	]
 }

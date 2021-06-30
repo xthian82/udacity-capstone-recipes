@@ -1,8 +1,8 @@
 export interface RecipeItem {
-    userId: string
     recipeId: string
     createdAt: string
     title: string
+    publisher: string
     category?: string
     attachmentUrl?: string
     ingredients?: [string]

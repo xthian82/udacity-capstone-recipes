@@ -1,10 +1,11 @@
 import {CreateRecipeRequest} from "../requests/CreateRecipeRequest";
 import {RecipesAccess} from "../dataLayer/recipesAccess";
-import {RecipeItem} from "../models/RecipeItem";
 import {UpdateRecipeRequest} from "../requests/UpdateRecipeRequest";
 import {RecipeUpdate} from "../models/RecipeUpdate";
 import {ImagesAccess} from "../dataLayer/imagesAccess";
 import {createLogger} from "../utils/logger";
+import {User} from "../models/user";
+import {RecipeItem} from "../models/RecipeItem";
 
 const recipesAccess = new RecipesAccess()
 const imagesAccess = new ImagesAccess()
@@ -19,12 +20,12 @@ export async function getRecipe(userId: string, recipeId: string): Promise<Recip
 }
 
 export async function createRecipe(createRecipeRequest: CreateRecipeRequest,
-                                   userId: string): Promise<RecipeItem> {
+                                   user: User): Promise<RecipeItem> {
 
-    const recipeItem = await recipesAccess.createRecipe({
-        userId,
+    const recipeItem = await recipesAccess.createRecipe(user.userId,{
         recipeId: createRecipeRequest.recipeId,
         createdAt: new Date().toISOString(),
+        publisher: user.name,
         title: createRecipeRequest.title,
         category: createRecipeRequest.category,
         attachmentUrl: createRecipeRequest.attachmentUrl,

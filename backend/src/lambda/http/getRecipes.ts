@@ -3,15 +3,15 @@ import 'source-map-support/register'
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {createLogger} from "../../utils/logger";
 import {getRecipes} from "../../businessLogic/recipes";
-import {getUserId} from "../utils";
+import {getUser} from "../utils";
 
 const logger = createLogger('getRecipesFunc')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
     logger.info('Getting all recipes by user ')
-    const userId = getUserId(event)
-    const recipes = await getRecipes(userId)
+    const user = getUser(event)
+    const recipes = await getRecipes(user.userId)
 
     return {
         statusCode: 200,
