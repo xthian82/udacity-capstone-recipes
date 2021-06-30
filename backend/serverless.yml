@@ -71,7 +71,7 @@ functions:
     events:
       - http:
           method: get
-          path: recipes/{recipeId}
+          path: recipe/{recipeId}
           cors: true
     iamRoleStatements:
       - Effect: Allow
