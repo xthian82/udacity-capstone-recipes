@@ -3,14 +3,17 @@ import {Form, Button} from "react-bootstrap";
 import { v4 as uuidv4 } from 'uuid';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faTrash} from "@fortawesome/free-solid-svg-icons";
+import noimage from "../../../assets/inf.png";
 
 const RecipeForm = (props) => {
    const [recipe, setRecipe] = useState(() => {
       return {
+         recipeId: props.recipe ? props.recipe.recipeId: null,
+         attachmentUrl: props.recipe ? props.recipe.attachmentUrl : '',
+         category: props.recipe ? props.recipe.category : '',
          title: props.recipe ? props.recipe.title : '',
-         image: props.recipe ? props.recipe.image : '',
          ingredients: props.recipe ? props.recipe.ingredients : [],
-         date: props.recipe ? props.recipe.date : ''
+         createdAt: props.recipe ? props.recipe.createdAt : ''
       }
    });
 
@@ -18,9 +21,10 @@ const RecipeForm = (props) => {
    const [item, setItem] = useState('');
    const isEdit = props.edit;
 
-   const { title, image } = recipe;
+   const { title, category, attachmentUrl } = recipe;
 
    let ingredients = recipe.ingredients || [];
+   const img = attachmentUrl || noimage
 
    const handleOnSubmit = (event) => {
       event.preventDefault();
@@ -33,12 +37,12 @@ const RecipeForm = (props) => {
       });
 
       if (allReqFieldsFilled) {
-         const recipe = {
-            id: uuidv4(),
+         let recipe = {
+            recipeId: (isEdit ? recipe.recipeId : uuidv4()),
             title,
-            image,
-            ingredients,
-            date: new Date()
+            category,
+            attachmentUrl,
+            ingredients
          };
          props.handleOnSubmit(recipe);
       } else {
@@ -134,6 +138,17 @@ const RecipeForm = (props) => {
                      placeholder="Enter a title"
                      onChange={handleInputChange}
                   />
+
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                     className="input-control required"
+                     type="text"
+                     name="category"
+                     value={category}
+                     placeholder="keto, spicy... "
+                     onChange={handleInputChange}
+                  />
+                  <Form.Label><img src={img} width="130" height="100" alt=""/></Form.Label>
                </Form.Group>
             </div>
 
@@ -153,7 +168,6 @@ const RecipeForm = (props) => {
             </div>
 
             {createIngredientsUI()}
-
 
          </Form>
       </div>

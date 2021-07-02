@@ -1,12 +1,16 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import _ from 'lodash';
 import Recipe from "../components/recipes/view-edit/Recipe";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useAuth0, withAuthenticationRequired} from "@auth0/auth0-react";
 import Loading from "../components/Loading";
+import axios from "axios";
+import {apiEndpoint} from "../config";
 
-export const MyRecipes = ({recipes, setRecipes}) => {
+export const MyRecipes = (/*{recipes, setRecipes}*/) => {
+
+   const [recipes, setRecipes] = useState([])
 
    const handleRemoveRecipe = (id) => {
       confirmAlert({
@@ -28,57 +32,35 @@ export const MyRecipes = ({recipes, setRecipes}) => {
    };
 
    const {
-      getAccessTokenSilently,
       getIdTokenClaims,
       //loginWithPopup,
       //getAccessTokenWithPopup,
    } = useAuth0();
 
-   const getData = async () => {
-
-   }
-
-   /*useEffect(() => {
-  async function fetchData() {
-    // You can await here
-    const response = await MyAPI.getData(someId);
-    // ...
-  }
-  fetchData();
-}, [someId]); // Or [] if effect doesn't need props or state*/
-
    useEffect(() => {
       async function fetchData() {
          try {
-            // You can await here
             const idToken = await getIdTokenClaims();
-            console.log(`***** Id token ${idToken.__raw}`);
+            console.log(`Bearer ${idToken.__raw}`)
 
-            /* const response = await fetch(`${apiOrigin}/api/external`, {
-             headers: {
-                Authorization: `Bearer ${token}`,
-             },
-            });
-
-            const responseData = await response.json();
-
-            setState({
-             ...state,
-             showResult: true,
-             apiMessage: responseData,
-            });*/
-            // ...
+            axios.get(`${apiEndpoint}/recipes`, {
+               headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${idToken.__raw}`
+               }}).then(res => {
+                  console.log(res.data.items)
+                  setRecipes(res.data.items)
+               }).catch(err => {
+                  console.log(err);
+               })
          } catch (error) {
             console.log(error);
-            /*setState({
-               ...state,
-               error: error.error,
-            });*/
          }
       }
 
-      fetchData();
-   });
+      fetchData()
+
+   }, []);
 
    return (
       <Fragment>
@@ -90,7 +72,7 @@ export const MyRecipes = ({recipes, setRecipes}) => {
             <div>
                {!_.isEmpty(recipes) ? (
                   recipes.map((recipe) => (
-                     <Recipe key={recipe.id} {...recipe} handleRemoveRecipe={handleRemoveRecipe} />
+                     <Recipe key={recipe.recipeId} {...recipe} handleRemoveRecipe={handleRemoveRecipe} />
                   ))
                ) : (
                   <p className="message">No Recipes available. Please add some recipes.</p>

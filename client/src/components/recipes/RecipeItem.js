@@ -4,6 +4,7 @@ import {faFileSignature, faHeart} from "@fortawesome/free-solid-svg-icons";
 import LinesEllipsis from "react-lines-ellipsis";
 
 import noimage from '../../assets/no-image.png'
+import inf from '../../assets/inf.png'
 
 class RecipeItem extends Component {
 
@@ -20,7 +21,7 @@ class RecipeItem extends Component {
 
        const {handleDetails} = this.props;
 
-       const image_url = this.props.recipe.image_url || noimage;
+       const image_url = this.props.recipe.image_url || inf;
        const social_rank = this.props.recipe.social_rank || 0;
 
         return (
