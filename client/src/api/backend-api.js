@@ -50,6 +50,18 @@ export const getRecipeById = async (idToken, recipeId) => {
 }
 
 export const createRecipe = async (idToken, newRecipe) => {
+  /* let item = {
+      title: newRecipe.title
+   }
+
+   if (newRecipe.category) {
+      item.category = newRecipe.category
+   }
+
+   if (newRecipe.ingredients) {
+      item.ingredients = newRecipe.ingredients
+   }*/
+
    console.log(`creating recipe ${JSON.stringify(newRecipe)}`)
    const response = await axios.post(`${apiEndpoint}/recipes`, JSON.stringify(newRecipe), {
       headers: {
@@ -60,7 +72,7 @@ export const createRecipe = async (idToken, newRecipe) => {
          console.log(err);
       })
    console.log(`${response}`)
-   return response?.data?.item
+   return response?.data?.item?.recipeId
 }
 
 export const patchRecipe = async (idToken, recipeId, updatedRecipe) => {

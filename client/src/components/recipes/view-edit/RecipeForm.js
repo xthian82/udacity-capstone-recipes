@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Form, Button} from "react-bootstrap";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faTrash} from "@fortawesome/free-solid-svg-icons";
 import noimage from "../../../assets/inf.png";
@@ -10,7 +10,7 @@ import {createRecipe, getUploadUrl, patchRecipe, uploadFileToBucket} from "../..
 const RecipeForm = (props) => {
    const [recipe, setRecipe] = useState(() => {
       return {
-         recipeId: props.recipe ? props.recipe.recipeId: null,
+         //recipeId: props.recipe ? props.recipe.recipeId: null,
          attachmentUrl: props.recipe ? props.recipe.attachmentUrl : '',
          category: props.recipe ? props.recipe.category : '',
          title: props.recipe ? props.recipe.title : '',
@@ -23,6 +23,7 @@ const RecipeForm = (props) => {
    const [errorMsg, setErrorMsg] = useState('');
    const [item, setItem] = useState('');
    const isEdit = props.edit;
+   const recipeId = props.recipe ? props.recipe.recipeId: null;
 
    const { title, category, attachmentUrl } = recipe;
 
@@ -55,16 +56,19 @@ const RecipeForm = (props) => {
       });
 
       if (allReqFieldsFilled) {
-         const id = (isEdit ? recipe.recipeId : uuidv4())
+         // const id = (isEdit ? recipe.recipeId : uuidv4())
          const idToken = await getToken()
 
-         await uploadFile(idToken, id)
+         let id = recipeId
 
          if (isEdit) {
-            await patchRecipe(idToken, recipe.recipeId, recipe)
+            await patchRecipe(idToken, recipeId, recipe)
          } else {
-            recipe.recipeId = id
-            await createRecipe(idToken, recipe)
+            id = await createRecipe(idToken, recipe)
+         }
+
+         if (id !== undefined) {
+            await uploadFile(idToken, id)
          }
 
          props.handleOnSubmit(recipe);
@@ -90,10 +94,8 @@ const RecipeForm = (props) => {
 
          recipe.attachmentUrl = urlLink.attachmentUrl
 
-         /*setRecipe((prevState) => ({
-            ...prevState,
-            [attachmentUrl]: urlLink.attachmentUrl
-         }));*/
+         await patchRecipe(idToken, recipeId, recipe)
+
          // alert('File was uploaded!')
       } catch (e) {
          console.log(e)

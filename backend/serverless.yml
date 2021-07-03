@@ -73,6 +73,7 @@ functions:
           method: get
           path: recipe/{recipeId}
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -82,10 +83,30 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
-          - dynamodb:Scans
+          - dynamodb:Scan
           - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}/index/${self:provider.environment.RECIPES_INDEX_NAME}
 
+  GetPublicRecipe:
+    handler: src/lambda/http/getPublicRecipe.handler
+    events:
+      - http:
+          method: get
+          path: public/recipe/{recipeId}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}/index/${self:provider.environment.RECIPES_INDEX_NAME}
 
   SearchRecipes:
     handler: src/lambda/http/searchRecipes.handler
@@ -237,7 +258,8 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.RECIPES_TABLE}
-        LocalSecondaryIndexes:
+        #LocalSecondaryIndexes:
+        GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.RECIPES_INDEX_NAME}
             KeySchema:
               - AttributeName: userId

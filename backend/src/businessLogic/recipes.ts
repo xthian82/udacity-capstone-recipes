@@ -7,6 +7,8 @@ import {createLogger} from "../utils/logger";
 import {User} from "../models/user";
 import {RecipeItem} from "../models/RecipeItem";
 import {S3UploadUrl} from "../models/S3UploadUrl";
+import { v4 as uuidv4 } from 'uuid';
+import {RecipeCreated} from "../models/RecipeCreated";
 
 const recipesAccess = new RecipesAccess()
 const imagesAccess = new ImagesAccess()
@@ -20,11 +22,14 @@ export async function getRecipe(userId: string, recipeId: string): Promise<Recip
     return recipesAccess.getRecipe(userId, recipeId)
 }
 
-export async function createRecipe(createRecipeRequest: CreateRecipeRequest,
-                                   user: User): Promise<RecipeItem> {
+export async function getPublicRecipe(recipeId: string): Promise<RecipeItem> {
+    return recipesAccess.getPubRecipe(recipeId)
+}
 
-    const recipeItem = await recipesAccess.createRecipe(user.userId,{
-        recipeId: createRecipeRequest.recipeId,
+export async function createRecipe(createRecipeRequest: CreateRecipeRequest,
+                                   user: User): Promise<RecipeCreated> {
+    const recipeId = uuidv4() + "_" + new Date().getTime().toString()
+    const recipeItem = await recipesAccess.createRecipe(user.userId, recipeId, {
         createdAt: new Date().toISOString(),
         publisher: user.name,
         title: createRecipeRequest.title,
@@ -34,7 +39,11 @@ export async function createRecipe(createRecipeRequest: CreateRecipeRequest,
         socialRank: 0
     })
 
-    return recipeItem
+    return {
+        recipeId,
+        publisher: recipeItem.publisher,
+        createdAt: recipeItem.createdAt
+    }
 }
 
 export async function searchRecipes(querySearch: string): Promise<RecipeItem[]> {
