@@ -50,13 +50,29 @@ export class RecipesAccess {
         return item as RecipeItem
     }
 
-    async createRecipe(userId: string, recipeItem: RecipeItem): Promise<RecipeItem> {
+    async getPubRecipe(recipeId: string): Promise<RecipeItem> {
+        logger.info('Getting public base ', recipeId)
+        const result = await this.docClient.scan({
+            TableName: this.recipesTable,
+            IndexName: recipesIndexName,
+            FilterExpression: 'recipeId = :recipeId',
+            ExpressionAttributeValues: {
+                ':recipeId': recipeId
+            },
+            Limit: 1
+        }).promise()
+
+        const item = result.Items
+        return item[0] as RecipeItem
+    }
+
+    async createRecipe(userId: string, recipeId: string, recipeItem: RecipeItem): Promise<RecipeItem> {
         logger.info('Creating item ', JSON.stringify(recipeItem))
         const joinedIngs = recipeItem.ingredients ? recipeItem.ingredients.join('**') : undefined
 
         await this.docClient.put({
             TableName: this.recipesTable,
-            Item: {userId: userId, ...recipeItem, titledIngs: recipeItem.title + '|' + joinedIngs}
+            Item: {userId, recipeId, ...recipeItem, titledIngs: recipeItem.title + '|' + joinedIngs}
         }).promise()
 
         return recipeItem as RecipeItem
@@ -123,30 +139,6 @@ export class RecipesAccess {
             }
         }).promise()
     }
-
-    // TODO: this should be done when an actual image is uploaded to bucket
-   /*
-    async uploadUrlForUser(recipeId: string, userId: string, attachmentUrl: string): Promise<void> {
-        logger.info('generating url image ', recipeId)
-
-        await this.docClient.update({
-                TableName: this.recipesTable,
-                Key: {
-                    "userId": userId,
-                    "recipeId": recipeId
-                },
-                UpdateExpression: "set attachmentUrl = :attachmentUrl",
-                ExpressionAttributeValues: {
-                    ":attachmentUrl": attachmentUrl
-                },
-                ReturnValues: "UPDATED_NEW"
-            }, (err, _) => {
-                if (err) {
-                    logger.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-                }
-            }
-        ).promise()
-    }*/
 
     async queryForRecipes(querySearch: string): Promise<RecipeItem[]> {
         logger.info('querying (', querySearch, ')')

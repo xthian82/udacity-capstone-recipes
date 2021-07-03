@@ -3,10 +3,9 @@ import RecipeForm from "./RecipeForm";
 import {withAuthenticationRequired} from "@auth0/auth0-react";
 import Loading from "../../Loading";
 
-const AddRecipe = ({ history, recipes, setRecipes }) => {
+const AddRecipe = ({ history }) => {
 
-   const handleOnSubmit = (recipe) => {
-      setRecipes([recipe, ...recipes]);
+   const handleOnSubmit = () => {
       history.push('/recipes');
    }
 

@@ -7,7 +7,6 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
-import ExternalApi from "./views/ExternalApi";
 import {useAuth0} from "@auth0/auth0-react";
 import history from "./utils/history";
 
@@ -19,15 +18,12 @@ import "./App.css";
 
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
-import useLocalStorage from "./utils/useLocalStorage";
 import EditRecipe from "./components/recipes/view-edit/EditRecipe";
 
 initFontAwesome();
 
 const App = () => {
    const {isLoading, error} = useAuth0();
-
-   const [recipes, setRecipes] = useLocalStorage('recipes', []);
 
    if (error) {
       return <div>Oops... {error.message}</div>;
@@ -45,20 +41,14 @@ const App = () => {
                <Switch>
                   <Route path="/" exact component={Home}/>
                   <Route path="/profile" component={Profile}/>
-                  <Route path="/external-api" component={ExternalApi}/>
-
-                  <Route path="/recipes"
-                     render={(props) =>
-                        <MyRecipes {...props} recipes={recipes} setRecipes={setRecipes} /> } />
-
+                  <Route path="/recipes" component={MyRecipes}/>
                   <Route path="/add-recipe"
                          render={(props) => (
-                            <AddRecipe {...props} recipes={recipes} setRecipes={setRecipes} />
+                            <AddRecipe {...props} />
                          )}/>
-
-                  <Route path="/edit-recipe/:id"
+                  <Route path="/edit-recipe/:recipeId"
                          render={(props) => (
-                            <EditRecipe {...props} recipes={recipes} setRecipes={setRecipes} />
+                            <EditRecipe {...props} />
                          )}/>
 
                </Switch>

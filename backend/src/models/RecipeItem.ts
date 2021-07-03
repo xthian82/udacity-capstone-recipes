@@ -1,5 +1,5 @@
 export interface RecipeItem {
-    recipeId: string
+    recipeId?: string
     createdAt: string
     title: string
     publisher: string
