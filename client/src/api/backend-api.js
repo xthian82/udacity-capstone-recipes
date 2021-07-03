@@ -56,12 +56,11 @@ export const createRecipe = async (idToken, newRecipe) => {
          'Content-Type': 'application/json',
          'Authorization': `Bearer ${idToken}`
       }})
-      .then(r => {return r})
       .catch(err => {
          console.log(err);
       })
    console.log(`${response}`)
-   return response.data.item
+   return response?.data?.item
 }
 
 export const patchRecipe = async (idToken, recipeId, updatedRecipe) => {

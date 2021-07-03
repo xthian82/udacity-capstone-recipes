@@ -124,30 +124,6 @@ export class RecipesAccess {
         }).promise()
     }
 
-    // TODO: this should be done when an actual image is uploaded to bucket
-   /*
-    async uploadUrlForUser(recipeId: string, userId: string, attachmentUrl: string): Promise<void> {
-        logger.info('generating url image ', recipeId)
-
-        await this.docClient.update({
-                TableName: this.recipesTable,
-                Key: {
-                    "userId": userId,
-                    "recipeId": recipeId
-                },
-                UpdateExpression: "set attachmentUrl = :attachmentUrl",
-                ExpressionAttributeValues: {
-                    ":attachmentUrl": attachmentUrl
-                },
-                ReturnValues: "UPDATED_NEW"
-            }, (err, _) => {
-                if (err) {
-                    logger.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-                }
-            }
-        ).promise()
-    }*/
-
     async queryForRecipes(querySearch: string): Promise<RecipeItem[]> {
         logger.info('querying (', querySearch, ')')
         const result = await this.docClient.scan({

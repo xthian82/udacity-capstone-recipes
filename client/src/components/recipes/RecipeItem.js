@@ -3,7 +3,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileSignature, faHeart} from "@fortawesome/free-solid-svg-icons";
 import LinesEllipsis from "react-lines-ellipsis";
 
-import noimage from '../../assets/no-image.png'
 import inf from '../../assets/inf.png'
 
 class RecipeItem extends Component {

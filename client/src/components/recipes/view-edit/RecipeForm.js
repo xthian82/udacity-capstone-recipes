@@ -54,22 +54,16 @@ const RecipeForm = (props) => {
          return value !== '' && value !== '0';
       });
 
-      const id = (isEdit ? recipe.recipeId : uuidv4())
       if (allReqFieldsFilled) {
-         let recipe = {
-            recipeId: id,
-            title,
-            category,
-            attachmentUrl,
-            ingredients
-         };
-
+         const id = (isEdit ? recipe.recipeId : uuidv4())
          const idToken = await getToken()
-         await uploadFile(idToken, recipe.recipeId)
+
+         await uploadFile(idToken, id)
 
          if (isEdit) {
             await patchRecipe(idToken, recipe.recipeId, recipe)
          } else {
+            recipe.recipeId = id
             await createRecipe(idToken, recipe)
          }
 
@@ -87,11 +81,19 @@ const RecipeForm = (props) => {
          }
 
          //this.setUploadState(UploadState.FetchingPresignedUrl)
-         const uploadUrl = await getUploadUrl(idToken, recipeId)
+         const urlLink = await getUploadUrl(idToken, recipeId)
+
+         console.log(`link obtained = ${JSON.stringify(urlLink)}`)
 
          // this.setUploadState(UploadState.UploadingFile)
-         await uploadFileToBucket(uploadUrl, selectedFile)
+         await uploadFileToBucket(urlLink.uploadUrl, selectedFile)
 
+         recipe.attachmentUrl = urlLink.attachmentUrl
+
+         /*setRecipe((prevState) => ({
+            ...prevState,
+            [attachmentUrl]: urlLink.attachmentUrl
+         }));*/
          // alert('File was uploaded!')
       } catch (e) {
          console.log(e)
@@ -145,7 +147,7 @@ const RecipeForm = (props) => {
          return;
       }
 
-      let ing = recipe.ingredients;
+      let ing = ingredients;
       ing.push(item);
       setRecipe((prevState) => ({
          ...prevState,

@@ -29,8 +29,9 @@ const EditRecipe = ({ history }) => {
          }
       }
 
-      fetchData()
+      fetchData().then(r => {}).catch(e => {console.log(e)})
 
+      return () => {}
    }, [recipeId]);
 
    return (

@@ -6,6 +6,7 @@ import {ImagesAccess} from "../dataLayer/imagesAccess";
 import {createLogger} from "../utils/logger";
 import {User} from "../models/user";
 import {RecipeItem} from "../models/RecipeItem";
+import {S3UploadUrl} from "../models/S3UploadUrl";
 
 const recipesAccess = new RecipesAccess()
 const imagesAccess = new ImagesAccess()
@@ -61,11 +62,14 @@ export async function deleteRecipe(recipeId: string, userId: string): Promise<vo
     await recipesAccess.deleteRecipe(userId, recipeId)
 }
 
-export async function generateUrlImage(userId: string, recipeId: string): Promise<string> {
-    //const attachmentUrl = imagesAccess.getUploadUrl(recipeId)
+export async function generateUrlImage(userId: string, recipeId: string): Promise<S3UploadUrl> {
     logger.info('Generating  url image for user ', userId, ', and recipe ', recipeId)
 
-    // await recipesAccess.uploadUrlForUser(recipeId, userId, attachmentUrl)
+    const attachmentUrl = imagesAccess.getUploadUrl(recipeId)
+    const signedUrl = imagesAccess.generateSignedUploadUrl(recipeId);
 
-    return imagesAccess.generateSignedUploadUrl(recipeId)
+    return {
+        uploadUrl: signedUrl,
+        attachmentUrl: attachmentUrl
+    }
 }
