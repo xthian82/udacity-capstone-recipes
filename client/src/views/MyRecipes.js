@@ -5,21 +5,30 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useAuth0, withAuthenticationRequired} from "@auth0/auth0-react";
 import Loading from "../components/Loading";
-import axios from "axios";
-import {apiEndpoint} from "../config";
+import {deleteRecipe, getRecipes} from "../api/backend-api";
 
-export const MyRecipes = (/*{recipes, setRecipes}*/) => {
+export const MyRecipes = () => {
 
    const [recipes, setRecipes] = useState([])
 
-   const handleRemoveRecipe = (id) => {
+   let [token] = useState('')
+
+   const {
+      getIdTokenClaims
+   } = useAuth0();
+
+   const handleRemoveRecipe = (recipeId) => {
       confirmAlert({
          title: 'Confirm',
          message: 'Are you sure ?',
          buttons: [
             {
                label: 'Yes',
-               onClick: () => { setRecipes(recipes.filter((recipe) => recipe.id !== id)); }
+               onClick: async () => {
+                  const token = await getToken()
+                  await deleteRecipe(token, recipeId)
+                  setRecipes(recipes.filter((recipe) => recipe.recipeId !== recipeId));
+               }
             },
             {
                label: 'No',
@@ -28,31 +37,25 @@ export const MyRecipes = (/*{recipes, setRecipes}*/) => {
          ]
       });
 
-
    };
 
-   const {
-      getIdTokenClaims,
-      //loginWithPopup,
-      //getAccessTokenWithPopup,
-   } = useAuth0();
+   const getToken = async () => {
+      if (token.length === 0) {
+         console.log('getting token')
+         const idToken = await getIdTokenClaims();
+         token = idToken.__raw
+      }
+      // console.log(`returning = ${token}`)
+      return token
+   }
 
    useEffect(() => {
       async function fetchData() {
          try {
-            const idToken = await getIdTokenClaims();
-            console.log(`Bearer ${idToken.__raw}`)
-
-            axios.get(`${apiEndpoint}/recipes`, {
-               headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${idToken.__raw}`
-               }}).then(res => {
-                  console.log(res.data.items)
-                  setRecipes(res.data.items)
-               }).catch(err => {
-                  console.log(err);
-               })
+            const token = await getToken()
+            console.log('fetching recipes')
+            const response = await getRecipes(token)
+            setRecipes(response)
          } catch (error) {
             console.log(error);
          }

@@ -3,9 +3,8 @@ import RecipeForm from "./RecipeForm";
 import { useParams } from 'react-router-dom';
 import {useAuth0, withAuthenticationRequired} from "@auth0/auth0-react";
 import Loading from "../../Loading";
-import axios from "axios";
-import {apiEndpoint} from "../../../config";
 import _ from "lodash";
+import {getRecipeById} from "../../../api/backend-api";
 
 const EditRecipe = ({ history }) => {
    const { recipeId } = useParams();
@@ -16,8 +15,6 @@ const EditRecipe = ({ history }) => {
    } = useAuth0();
 
    const handleOnSubmit = () => {
-      // const filteredRecipes = recipes.filter((r) => r.id !== id);
-      // setRecipes([recipe, ...filteredRecipes]);
       history.push('/recipes');
    };
 
@@ -25,17 +22,8 @@ const EditRecipe = ({ history }) => {
       async function fetchData() {
          try {
             const idToken = await getIdTokenClaims();
-
-            axios.get(`${apiEndpoint}/recipe/${recipeId}`, {
-               headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${idToken.__raw}`
-               }}).then(res => {
-                  console.log(res.data)
-               setRecipe(res.data.items)
-            }).catch(err => {
-               console.log(err);
-            })
+            const item = await getRecipeById(idToken.__raw, recipeId)
+            setRecipe(item)
          } catch (error) {
             console.log(error);
          }
@@ -43,7 +31,7 @@ const EditRecipe = ({ history }) => {
 
       fetchData()
 
-   }, []);
+   }, [recipeId]);
 
    return (
       <div>
